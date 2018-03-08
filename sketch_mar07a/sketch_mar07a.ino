@@ -8,15 +8,17 @@ I'll explain what the code does at every step so that you may control the car fr
 #include <SoftwareSerial.h>
 
 SoftwareSerial BT(0,1);
-Servo serv;   //This is the name of our servo (the blue machine)
 
-int UltraTrig=12; //These are the pins which will connect to the ultrasonic sensor.
-int UltraEcho=11; //The number corresponds to the pin number on the arduino board.
+Servo turn;   //This is the name of our servo (the blue machine)
+Servo power; //C is for continuous servo (the back wheels).
 
-int MotorControlPin1=5;  //These are the pins for the motor controller (the black block)
-int MotorControlPin2=6;
+int UltraTrig=3; //These are the pins which will connect to the ultrasonic sensor.
+int UltraEcho=2; //The number corresponds to the pin number on the arduino board.
 
-int ServPin=3;
+int LedPin=4;
+
+int turnPin=6;
+int powerPin=5;
 int angle=40;
 //The angle determines the direction of the car.
 //70 is straight ahead
@@ -25,20 +27,23 @@ int angle=40;
 
 float UltraSens; //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
 
+int playMode = 0; // 0: stop mode; 1: drive mode; 2: smart stop; 3: roomba mode;
+
+
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
 char command='F';// Command received from your phone
 int  commandType=0;//0: useless command; 1:driving command; 2: mode change command
 
 //-------------------------------------------------------------------------------------
 void setup() {
-  serv.attach(ServPin);
-  //Tells the arduino that our servo is controlled by ServPin
+  turn.attach(turnPin);
+  power.attach(powerPin);
+  //Tells the arduino that our servo is controlled by which pin
+ 
  
   pinMode(UltraTrig,OUTPUT); //This sets our pins as either input (collected data)
   pinMode(UltraEcho,INPUT);  //Or output (transmitted data)
- 
-  pinMode(MotorControlPin1,OUTPUT);
-  pinMode(MotorControlPin2,OUTPUT);
+
 
   Serial.begin(9600); //This is for communication between different devices
   //In this case, it is between the blutooth module and the arduino.
@@ -53,13 +58,17 @@ void setup() {
 }
 
 void loop() {
+  turn.write(70);
   if(BT.available()){
     checkCommand();
     if(commandType==2){
       modeChange();
       }
     else if (commandType == 1 and playMode == 1){// in manual drive(playMode 1
-
+      switch(command){
+        case 'A': power.writeMilliseconds(255);
+          break;
+        case 'B': power.writeMilliseconds(255);
       }
     else{
       // it is a useless command
