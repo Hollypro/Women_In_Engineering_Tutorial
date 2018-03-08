@@ -25,11 +25,14 @@ int turnPin=6;
 int powerPin=5;
 
 int angle=40;
-int angLim[2]={40,100};
+int anglim[2]={40,100};// angle limits
 //The angle determines the direction of the car.
 //70 is straight ahead
 //100 is right
 //40 is left
+
+int sv=1500;//speed value
+int splim[2]={1000,2000};//speed limit
 
 
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
