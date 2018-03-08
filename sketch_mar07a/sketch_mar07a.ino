@@ -12,8 +12,8 @@ Servo serv;   //This is the name of our servo (the blue machine)
 int UltraTrig=12; //These are the pins which will connect to the ultrasonic sensor.
 int UltraEcho=11; //The number corresponds to the pin number on the arduino board.
 
-int MotorControlPin1=10;  //These are the pins for the motor controller (the black block)
-int MotorControlPin2=9;
+int MotorControlPin1=5;  //These are the pins for the motor controller (the black block)
+int MotorControlPin2=6;
 
 int ServPin=3;
 int angle=40;
@@ -24,7 +24,11 @@ int angle=40;
 
 float UltraSens; //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
 
+int playMode = 0; // 0: stop mode; 1: drive mode; 2: smart stop; 3: roomba mode;
 
+int command;// Command received from your phone
+
+//-------------------------------------------------------------------------------------
 void setup() {
   serv.attach(ServPin);
   //Tells the arduino that our servo is controlled by ServPin
@@ -48,6 +52,23 @@ void setup() {
 }
 
 void loop() {
-  analogWrite(MotorControlPin1,120);
-  analogWrite(MotorControlPin2,0); //tells the motor to go forward at half speed (it's too fast otherwise) 
+  if(BT.available()){
+    checkMode();
+    
+    
+    
+    }
 }
+
+//---------------------------------------------------------------------------------------
+// Functions
+//***********************************************************
+// to determine the play mode
+void checkMode(){
+  int newC;
+  newC = BT.read();
+  uselessCommand = (newC==)
+  if(uselessCommand){return;}
+  }
+
+//***********************************************************

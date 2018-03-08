@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-SoftwareSerial BT(0,1);
+SoftwareSerial BT(10,11);
 
 void setup() {
   // put your setup code here, to run once:
@@ -12,5 +12,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (BT.available()){Serial.write(BT.read());}
+  //if (BT.isListening()){Serial.println("Listening!!!");}
+  if (BT.available()){Serial.println("im in");Serial.write(BT.read());}
 }
