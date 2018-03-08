@@ -14,6 +14,10 @@ Servo power; //C is for continuous servo (the back wheels).
 
 void checkCommand();
 void modeChange();
+void roombaMode();
+float ultrasonic();
+bool wall();
+void manualMode();
 
 int UltraTrig=3; //These are the pins which will connect to the ultrasonic sensor.
 int UltraEcho=2; //The number corresponds to the pin number on the arduino board.
@@ -22,17 +26,17 @@ int LedPin=4;
 
 int turnPin=6;
 int powerPin=5;
-int angle=40;
+int av = 70;//angle value
 int anglim[2]={40,100};// angle limits
 //The angle determines the direction of the car.
 //70 is straight ahead
 //100 is right
 //40 is left
 
-int sv=1500;//speed value
+int sv=1500;//speed level
 int splim[2]={1000,2000};//speed limit
 
-int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
+int playMode = 0; // 0: stop mode; 1: manual mode; 2: roomba mode;
 char command='F';// Command received from your phone
 int  commandType=0;//0: useless command; 1:driving command; 2: mode change command
 
@@ -61,30 +65,20 @@ void setup() {
 }
 
 void loop() {
+  if (playMode == 1 and wall()and sv > 1500){sv=1500;av=70;power.writeMicroseconds(sv);turn.write(av);}
   if(BT.available()){
     checkCommand();
-    turn.write(70);
     if(commandType==2){
       modeChange();
       }
     else if (commandType == 1 and playMode == 1){// in manual drive(playMode 1
-      switch(command){
-        case 'A': power.writeMicroseconds(2000);Serial.println("CA");
-          break;
-        case 'C': power.writeMicroseconds(1000);Serial.println("CC");
-          break;
-        case 'D': turn.write(40);Serial.println("CD");
-          break;
-        case 'B': turn.write(100);Serial.println("CB");
-          break;
-      }
+     manualMode();
      }
     else{
       // it is a useless command
       // or not in manual drive mode (playMode 2)
       // so we dont do anything
       }
-    delay(1000);
       
     }
   if(playMode == 0){ //stop mode
@@ -106,17 +100,6 @@ void checkCommand(){
   if(command=='A' or command=='B' or command=='C' or command=='D' ){commandType = 1;}
   else if(command=='E' or command=='F' or command=='G' or command=='H' ){commandType = 2;}
   else{commandType=0;}
-//  switch(command){
-//      case 'A': case 'B': case 'C': case 'D':
-//        commandType = 1; // driving commands(speed or direction)
-//        break;
-//      case 'E': case 'F': case 'G': case 'H':
-//        commandType = 2; // play mode command
-//        break;
-//      default:  // not all the commands are used
-//        commandType = 0;
-//        break;
-//    }
   }
 
 //***********************************************************
@@ -138,9 +121,46 @@ void modeChange(){
 
 //**************************************************************
 //
+void manualMode(){
+  if (wall() and command=='A'){sv=1500;av=70;power.writeMicroseconds(sv);turn.write(av);}
+  else{
+  switch(command){
+        case 'A': // foward
+          if(sv!= splim[1]){sv+=125;}
+          power.writeMicroseconds(sv);
+          break;
+        case 'C': // back
+          if(sv!= splim[0]){sv-=125;}
+          power.writeMicroseconds(sv);
+          break;
+        case 'D': // left
+          Serial.println("CD");
+          if(av!= anglim[0]){av-=15;}
+          turn.write(av);
+          break;
+        case 'B': // right
+          Serial.println("CB");
+          if(av!= anglim[1]){av+=15;}
+          turn.write(av);
+          break;
+      }
+  }
+}
+//***************************************************************88
+//
 void roombaMode(){
-  if(!wall()){power.writeMicroseconds(1800);}
-  else{}
+  if(!wall()){
+    power.writeMicroseconds(1800);
+    turn.write(70);
+    }
+  else{
+    int temp;
+    temp = millis()%2;
+    temp = 40+temp*60;
+    power.writeMicroseconds(1800);
+    turn.write(temp);
+    delay(2000);
+    }
   }
 //**********************************************************
 //
