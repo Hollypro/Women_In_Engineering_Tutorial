@@ -14,7 +14,6 @@ Servo power; //C is for continuous servo (the back wheels).
 
 void checkCommand();
 void modeChange();
-float UltraSens(); //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
 
 int UltraTrig=3; //These are the pins which will connect to the ultrasonic sensor.
 int UltraEcho=2; //The number corresponds to the pin number on the arduino board.
@@ -23,17 +22,23 @@ int LedPin=4;
 
 int turnPin=6;
 int powerPin=5;
-
 int angle=40;
+<<<<<<< HEAD
 int anglim[2]={40,100};// angle limits
+=======
+>>>>>>> f113f8d58420c70547773da8f73f9c87967c2e70
 //The angle determines the direction of the car.
 //70 is straight ahead
 //100 is right
 //40 is left
 
+<<<<<<< HEAD
 int sv=1500;//speed value
 int splim[2]={1000,2000};//speed limit
 
+=======
+float UltraSens; //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
+>>>>>>> f113f8d58420c70547773da8f73f9c87967c2e70
 
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
 char command='F';// Command received from your phone
@@ -64,7 +69,9 @@ void setup() {
 
 void loop() {
   turn.write(70);
-  if(BT.available()){
+  //  Serial.println("available");
+    command = BT.read();
+    Serial.print(command);
     checkCommand();
     if(commandType==2){
       modeChange();
@@ -102,7 +109,7 @@ void loop() {
 //***********************************************************
 // to determine the play mode
 void checkCommand(){
-  command = BT.read();
+  Serial.print(command);
   switch(command){
       case 'A': case 'B': case 'C': case 'D':
         commandType = 1; // driving commands(speed or direction)
@@ -136,7 +143,6 @@ void roombaMode(){
   
   }
 //**********************************************************
-// sensor
 bool wall(){
   if(ultrasonic()<20){
     return 1;// when a object detected
