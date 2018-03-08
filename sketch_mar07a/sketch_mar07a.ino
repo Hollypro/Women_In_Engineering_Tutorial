@@ -133,6 +133,41 @@ void roombaMode(){
 //**********************************************************
 // sensor
 bool wall(){
-  return 1;// when a object detected
+  if(ultrasonic()<20){
+    return 1;// when a object detected
+  }
   return 0;// when it is safe
   }
+
+float ultrasonic() {
+
+  float c = 343; // speed of sound (m/s) at 20 deg C and sea level
+  float duration; // echo time duration in microseconds
+  float distance; // distance in m
+  
+  // send echo pulse of 11us duration
+  digitalWrite(pin_trig, LOW); // start output low initially
+  delayMicroseconds(2); // wait for 2 us
+  digitalWrite(pin_trig, HIGH); // make output high
+  delayMicroseconds(11); // wait for 11 us
+  digitalWrite(pin_trig, LOW); // make the output low
+
+  duration = pulseIn(pin_echo, HIGH);
+
+  //Serial.print("\nduration (us) = ");
+  //Serial.print(duration); 
+  
+  duration *= 1.0e-6; // convert duration to seconds
+  
+  // 2*distance = speed * time -> distance = speed * time / 2
+  distance = c * duration / 2; // distance in m
+  
+  Serial.print("\ndistance (cm) = ");
+  Serial.print(distance*100);
+  delay(100);
+  return distance*100;
+  
+  // wait 100 ms between sensor measurements
+  // if the delay is too small there could be measurement errors
+  
+}
