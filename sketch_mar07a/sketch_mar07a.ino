@@ -25,21 +25,15 @@ int powerPin=5;
 int angle=40;
 <<<<<<< HEAD
 int anglim[2]={40,100};// angle limits
-=======
->>>>>>> f113f8d58420c70547773da8f73f9c87967c2e70
 //The angle determines the direction of the car.
 //70 is straight ahead
 //100 is right
 //40 is left
 
-<<<<<<< HEAD
 int sv=1500;//speed value
 int splim[2]={1000,2000};//speed limit
 
 =======
-float UltraSens; //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
->>>>>>> f113f8d58420c70547773da8f73f9c87967c2e70
-
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
 char command='F';// Command received from your phone
 int  commandType=0;//0: useless command; 1:driving command; 2: mode change command
@@ -65,10 +59,12 @@ void setup() {
   }
   
   turn.write(70); //Tells the car to begin as going straight ahead.
+  Serial.println("Let's start!");
 }
 
 void loop() {
   turn.write(70);
+  if(BT.available()){
   //  Serial.println("available");
     command = BT.read();
     Serial.print(command);
@@ -113,6 +109,7 @@ void checkCommand(){
   switch(command){
       case 'A': case 'B': case 'C': case 'D':
         commandType = 1; // driving commands(speed or direction)
+        Serial.println(command);
         break;
       case 'E': case 'F': case 'G': case 'H':
         commandType = 2; // play mode command
@@ -143,6 +140,7 @@ void roombaMode(){
   
   }
 //**********************************************************
+//
 bool wall(){
   if(ultrasonic()<20){
     return 1;// when a object detected
