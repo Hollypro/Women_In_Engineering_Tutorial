@@ -14,6 +14,7 @@ Servo power; //C is for continuous servo (the back wheels).
 
 void checkCommand();
 void modeChange();
+float UltraSens(); //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
 
 int UltraTrig=3; //These are the pins which will connect to the ultrasonic sensor.
 int UltraEcho=2; //The number corresponds to the pin number on the arduino board.
@@ -22,13 +23,14 @@ int LedPin=4;
 
 int turnPin=6;
 int powerPin=5;
+
 int angle=40;
+int angLim[2]={40,100};
 //The angle determines the direction of the car.
 //70 is straight ahead
 //100 is right
 //40 is left
 
-float UltraSens; //This will store the value given by the sensor, it can hold 15 decimal places (0 for integers)
 
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
 char command='F';// Command received from your phone
@@ -146,13 +148,13 @@ float ultrasonic() {
   float distance; // distance in m
   
   // send echo pulse of 11us duration
-  digitalWrite(pin_trig, LOW); // start output low initially
+  digitalWrite(UltraTrig, LOW); // start output low initially
   delayMicroseconds(2); // wait for 2 us
-  digitalWrite(pin_trig, HIGH); // make output high
+  digitalWrite(UltraTrig, HIGH); // make output high
   delayMicroseconds(11); // wait for 11 us
-  digitalWrite(pin_trig, LOW); // make the output low
+  digitalWrite(UltraTrig, LOW); // make the output low
 
-  duration = pulseIn(pin_echo, HIGH);
+  duration = pulseIn(UltraEcho, HIGH);
 
   //Serial.print("\nduration (us) = ");
   //Serial.print(duration); 
