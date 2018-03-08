@@ -139,12 +139,13 @@ void modeChange(){
 //**************************************************************
 //
 void roombaMode(){
-  
+  if(!wall()){power.writeMicroseconds(1800);}
+  else{}
   }
 //**********************************************************
 //
 bool wall(){
-  if(ultrasonic()<20){
+  if(ultrasonic()<25){
     return 1;// when a object detected
   }
   return 0;// when it is safe
@@ -173,8 +174,8 @@ float ultrasonic() {
   // 2*distance = speed * time -> distance = speed * time / 2
   distance = c * duration / 2; // distance in m
   
-  Serial.print("\ndistance (cm) = ");
-  Serial.print(distance*100);
+//  Serial.print("\ndistance (cm) = ");
+//  Serial.print(distance*100);
   delay(100);
   return distance*100;
   
