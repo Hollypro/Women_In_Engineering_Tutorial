@@ -66,15 +66,21 @@ void loop() {
       }
     else if (commandType == 1 and playMode == 1){// in manual drive(playMode 1
       switch(command){
-        case 'A': power.writeMilliseconds(255);
+        case 'A': power.writeMilliseconds(2000);
           break;
-        case 'B': power.writeMilliseconds(255);
+        case 'B': power.writeMilliseconds(1000);
+          break;
+        case 'C': turn.write(40);
+          break;
+        case 'D': turn.write(100);
+          break;
       }
     else{
       // it is a useless command
       // or not in manual drive mode (playMode 2)
       // so we dont do anything
       }
+    delay(200);
       
     }
 }
