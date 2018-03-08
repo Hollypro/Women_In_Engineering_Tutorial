@@ -132,6 +132,7 @@ void roombaMode(){
   }
 //**********************************************************
 //
-void wall(){
-  
+bool wall(){
+  return 1;// when a object detected
+  return 0;// when it is safe
   }
