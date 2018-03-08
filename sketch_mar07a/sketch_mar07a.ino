@@ -66,8 +66,8 @@ void loop() {
       // or not in manual drive mode (playMode 2)
       // so we dont do anything
       }
-      
     }
+  if(playMode == 0){};
 }
 
 //---------------------------------------------------------------------------------------
