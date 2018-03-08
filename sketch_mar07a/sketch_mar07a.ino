@@ -23,7 +23,6 @@ int LedPin=4;
 int turnPin=6;
 int powerPin=5;
 int angle=40;
-<<<<<<< HEAD
 int anglim[2]={40,100};// angle limits
 //The angle determines the direction of the car.
 //70 is straight ahead
@@ -33,7 +32,6 @@ int anglim[2]={40,100};// angle limits
 int sv=1500;//speed value
 int splim[2]={1000,2000};//speed limit
 
-=======
 int playMode = 0; // 0: stop mode; 1: smart stop; 2: roomba mode;
 char command='F';// Command received from your phone
 int  commandType=0;//0: useless command; 1:driving command; 2: mode change command
@@ -65,9 +63,6 @@ void setup() {
 void loop() {
   turn.write(70);
   if(BT.available()){
-  //  Serial.println("available");
-    command = BT.read();
-    Serial.print(command);
     checkCommand();
     if(commandType==2){
       modeChange();
@@ -106,6 +101,7 @@ void loop() {
 // to determine the play mode
 void checkCommand(){
   Serial.print(command);
+  command = BT.read();
   switch(command){
       case 'A': case 'B': case 'C': case 'D':
         commandType = 1; // driving commands(speed or direction)
