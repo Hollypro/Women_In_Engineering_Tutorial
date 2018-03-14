@@ -1,8 +1,3 @@
-/*
-Hi everyone!
-My name is Hu-go, I hope you guys are having a nice day!
-I'll explain what the code does at every step so that you may control the car from your phone!
-*/
 
 #include <Servo.h> //This tells the program to import some extra functions not usually needed.
 #include <SoftwareSerial.h>
@@ -82,6 +77,7 @@ void loop() {
       
     }
   if(playMode == 0){ //stop mode
+    sv=1500;
     power.writeMicroseconds(1500);
     }
   else if (playMode == 2){ // roomba mode
@@ -126,11 +122,11 @@ void manualMode(){
   else{
   switch(command){
         case 'A': // foward
-          if(sv!= splim[1]){sv+=125;}
+          if(sv!= splim[0]){sv-=125;}
           power.writeMicroseconds(sv);
           break;
         case 'C': // back
-          if(sv!= splim[0]){sv-=125;}
+          if(sv!= splim[1]){sv+=125;}
           power.writeMicroseconds(sv);
           break;
         case 'D': // left
