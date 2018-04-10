@@ -1,4 +1,3 @@
-
 #include <Servo.h> //This tells the program to import some extra functions not usually needed.
 #include <SoftwareSerial.h>
 
@@ -111,7 +110,6 @@ void modeChange(){
     case 'E': 
       playMode = 2;
       break;
-    
     }
   }
 
